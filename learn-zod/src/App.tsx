@@ -1,4 +1,35 @@
 import './App.css'
+import { z } from 'zod'
+
+const userSchema = z.object({
+  firstName:  z.string(),
+  email: z.string().email(),
+  profileUrl: z.string().url(),
+  age: z.number().min(1),
+  friends: z.array(z.string()),
+  settings: z.object({
+    isSubscribed: z.boolean()
+  })
+})
+
+type IUser = z.infer<typeof userSchema>
+
+const user: IUser = {
+  firstName: 'Mugundhan S',
+  email: 'abc@gmail.com',
+  profileUrl: 'https://google.com',
+  age: 18,
+  friends: ["friend 1", "friend 2", "friend 3"],
+  settings: {
+    isSubscribed: false
+  },
+}
+
+// parse the object if it fails it breaks the application
+//console.log(userSchema.parse(user))
+
+//safe parse was useful when we don't want the application to break
+console.log(userSchema.safeParse(user))
 
 function App() {
 
