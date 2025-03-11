@@ -1,5 +1,7 @@
+import { useForm } from 'react-hook-form'
 import './App.css'
 import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const userSchema = z.object({
   firstName:  z.string(),
@@ -14,6 +16,7 @@ const userSchema = z.object({
 
 type IUser = z.infer<typeof userSchema>
 
+/*
 const user: IUser = {
   firstName: 'Mugundhan S',
   email: 'abc@gmail.com',
@@ -23,7 +26,7 @@ const user: IUser = {
   settings: {
     isSubscribed: false
   },
-}
+}*/
 
 // parse the object if it fails it breaks the application
 //console.log(userSchema.parse(user))
@@ -33,6 +36,20 @@ console.log(userSchema.safeParse(user))
 
 function App() {
 
+  // automatic form handling
+  const form = useForm<IUser>({
+    resolver: zodResolver(userSchema)
+  })
+
+  // manual handling
+  function onSubmit(data : IUser){
+    const result = userSchema.safeParse(data)
+    if(result.success){
+      // handle success
+    }else{
+      // handle error
+    }
+  }
   return (
     <>
       <h1>Sample Application to Learn Zod</h1>
