@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form'
 import './App.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { fetchUserData } from './api/Api'
 
 const userSchema = z.object({
   firstName:  z.string(),
@@ -32,10 +33,11 @@ const user: IUser = {
 //console.log(userSchema.parse(user))
 
 //safe parse was useful when we don't want the application to break
-console.log(userSchema.safeParse(user))
+// console.log(userSchema.safeParse(user))
 
 function App() {
 
+  const data =  fetchUserData(1)
   // automatic form handling
   const form = useForm<IUser>({
     resolver: zodResolver(userSchema)
